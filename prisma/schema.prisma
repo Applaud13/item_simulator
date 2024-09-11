@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+// 계정 테이블 (여러 캐릭터 보유)
+model Players {
+  playerid Int @id @default(autoincrement()) @map("playerid")
+  id String @unique @map("id")
+  password String @map("password")
+  name String? @map("name")
+  age Int? @map("age")
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+
+  characters Characters[] @relation("PlayerCharacters")
+  @@map("Players")
+}
+
+
+// 캐릭터 테이블 (1개의 캐릭터 아이템, 1개의 캐릭터 인벤토리 보유)
+model Characters {
+  characterid Int @id @default(autoincrement()) @map("characterid")
+  playerid Int @map("playerid")
+  name String @map("name")
+  hp Int @default(500) @map("hp")
+  attackpower Int @default(100) @map("attackpower")
+  money Int @default(10000) @map("money")
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+
+  players Players @relation("PlayerCharacters", fields: [playerid], references: [playerid], onDelete: Cascade)
+  characteritem CharacterItem?
+  inventory Inventory?
+  @@map("Characters")
+}
+
+
+// 캐릭터 아이템 테이블 (여러 아이템(장비)보유)
+model CharacterItem {
+  characteritemid Int @id @default(autoincrement()) @map("characteritemid")
+  characterid Int @unique @map("characterid")
+  weaponid Int? @map("weaponid")
+  headid Int? @map("headid")
+  armorid Int? @map("armorid")
+  cloakid Int? @map("cloakid")
+  gloveid Int? @map("gloveid")
+  shoesid Int? @map("shoesid")
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+  
+  characters Characters @relation(fields: [characterid], references: [characterid], onDelete: Cascade)
+  equipitem EquipItem[]
+  @@map("CharacterItem")
+}
+
+
+// 캐릭터 인벤토리 테이블 (여러 아이템(장비)보유)
+model Inventory {
+  inventoryid Int @id @default(autoincrement()) @map("inventoryid")
+  characterid Int @unique @map("characterid")
+  size Int @default(100) @map("size")
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+
+  characters Characters @relation(fields: [characterid], references: [characterid], onDelete: Cascade)
+  equipitem EquipItem[]
+  @@map("Inventory")
+}
+
+
+// 아이템(장비) 테이블
+model EquipItem {
+  equipitemid Int @id @default(autoincrement()) @map("equipitemid")
+  characteritemid Int? @map("characteritemid")
+  itemname String @map("itemname")
+  inventoryid Int? @map("inventoryid")
+  itemstat Json @map("itemstat")
+  money Int @map("money")
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+
+  characteritem CharacterItem? @relation(fields: [characteritemid], references: [characteritemid], onDelete: Cascade)
+  inventory Inventory? @relation(fields: [inventoryid], references: [inventoryid], onDelete: Cascade)
+  @@map("EquipItem")
+}
+
+
