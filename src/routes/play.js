@@ -70,6 +70,11 @@ router.post("/shop/:characterid", jwttoken, async(req, res, next) => {
 })
 
 
-
+// 아이템 판매
+// 인벤토리 아이템 목록 조회
+// 장착한 아이템 목록 조회
+// 아이템 장착
+// 아이템 탈착
+// 게임머니 획득
 
 export default router;

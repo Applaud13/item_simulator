@@ -32,16 +32,14 @@
     "money": 가격,<br>
 	"itemstat": {<br>
 	"health": 체력 스탯,<br>
-	"attackpower": 공격력 스탯<br>
-	}<br>
+	"attackpower": 공격력 스탯}<br>
     
 9. **아이템 수정**<br>
     POST 52.78.206.210:3018:3018/api/:equipitemid<br>
     "name": "아이템 명칭",<br>
 	"itemstat": {<br>
 	"health": 체력 스탯,<br>
-	"attackpower": 공격력 스탯<br>
-	}<br>
+	"attackpower": 공격력 스탯}<br>
 
 10. **모든 아이템 조회**<br>
     GET 52.78.206.210:3018:3018/api/item<br>
