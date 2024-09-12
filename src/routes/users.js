@@ -75,12 +75,12 @@ router.get("/Player/:playerid", async(req, res, next) => {
             where: {playerid: +playerid},
             select: {
                 playerid: true,
-                id: true,
-                password: true,
+                id: false,
+                password: false,
                 name: true,
                 age: true,
-                createdAt: true,
-                updatedAt: true,
+                createdAt: false,
+                updatedAt: false,
                 characters: {
                     select: {
                         characterid: true,
@@ -88,8 +88,8 @@ router.get("/Player/:playerid", async(req, res, next) => {
                         name: true,
                         hp: true,
                         attackpower: true,
-                        createdAt: true,
-                        updatedAt: true
+                        createdAt: false,
+                        updatedAt: false
                     }
                 }
             }
@@ -118,8 +118,8 @@ router.get("/Player", async(req, res, next) => {
                 password: false,
                 name: false,
                 age: false,
-                createdAt: true,
-                updatedAt: true
+                createdAt: false,
+                updatedAt: false
             }
         });
 
