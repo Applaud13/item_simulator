@@ -10,10 +10,11 @@ const router = express.Router();
 
 
 // 아이템 구입
-router.get("/shop/:characterid/:equipitemid", jwttoken, async(req, res, next) => {
+router.post("/shop/:characterid", jwttoken, async(req, res, next) => {
     try{
 
-        const {characterid, equipitemid} = req.params;
+        const {characterid} = req.params;
+        const {equipitemid, count} = req.body;
 
         // 유효한 아이템 id가 맞는지 확인
         const item = await prisma.EquipItem.findFirst({
